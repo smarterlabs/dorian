@@ -1,0 +1,47 @@
+{
+  "name": "dorian",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:smarterlabs/dorian.git",
+  "author": "Kennedy Rose <kennedyianrose@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "lerna run build --stream --scope @smarterlabs/*",
+    "clean": "lerna run clean --stream --no-sort",
+    "dev": "yarn dev:sandbox",
+    "dev:all": "yarn run build && lerna run dev --parallel --stream --no-sort",
+    "dev:sandbox": "cd packages/sandbox && yarn dev",
+    "lint": "eslint ./",
+    "lint:fix": "eslint ./ --fix",
+    "publish": "yarn build && lerna publish from-package --yes",
+    "stop": "sudo killall -9 node",
+    "version": "lerna version"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "eslint --fix"
+    ]
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@smarterlabs/babel-preset": "^1.0.8",
+    "@smarterlabs/eslint-config": "^1.0.7",
+    "del-cli": "^3.0.0",
+    "eslint": "^6.8.0",
+    "husky": "^4.2.0",
+    "lerna": "^3.20.2",
+    "lint-staged": "^10.0.2",
+    "npm-run-all": "^4.1.5",
+    "parcel-bundler": "^1.12.4"
+  }
+}

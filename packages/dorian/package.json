@@ -1,0 +1,25 @@
+{
+  "name": "dorian",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "yarn run clean && node src/index",
+    "clean": "rm -rf dist",
+    "serve": "serve dist",
+    "start": "yarn build"
+  },
+  "dependencies": {
+    "@fwd/scraper": "^1.0.6",
+    "cheerio": "^1.0.0-rc.3",
+    "crawler": "^1.2.2",
+    "download-file": "^0.1.5",
+    "fs-extra": "^9.0.1",
+    "get-urls": "^9.2.1",
+    "replace-ext": "^2.0.0",
+    "sitemap-links": "^1.0.3",
+    "website-scraper": "^4.2.2"
+  },
+  "devDependencies": {
+    "serve": "^11.3.2"
+  }
+}
