@@ -1,0 +1,16 @@
+{
+  "name": "downloader",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "node index",
+    "test": "node test"
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "fs-extra": "^9.0.1",
+    "lodash": "^4.17.20",
+    "sitemap-links": "^1.0.3"
+  }
+}
