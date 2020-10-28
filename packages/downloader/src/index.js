@@ -31,7 +31,7 @@ async function crawlNextUrl(state, options){
     // Crawl URL
     console.log(`Fetching`, url)
     const result = await axios.get(url)
-    let { links, contents, filetype } = await parseContent(result)
+    let { links, contents, filetype } = await parseContent(result, options, state)
     if(links){
         links.forEach(link => {
             if(state.knownUrls.indexOf(link) === -1){
@@ -45,7 +45,10 @@ async function crawlNextUrl(state, options){
     // console.log(`contents`, contents)
 
     // Download file
-    const urlPath = parse(url).pathname
+    let urlPath = parse(url).pathname
+    if(!urlPath || urlPath === `/`){
+        urlPath = `index.html`
+    }
     let distPath = join(options.dist, urlPath)
     if(!extname(urlPath)){
         distPath = `${distPath}.${filetype}`

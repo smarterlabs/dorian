@@ -1,11 +1,14 @@
 const getSitemapLinks = require(`sitemap-links`)
 const get = require(`lodash/get`)
+const find = require(`lodash/find`)
+const { parse } = require(`url`)
+const { join } = require(`path`)
 
 const reg = {
     //Mime types
     REGEX_MIME_HTML:/^text\/html\b/i,
     REGEX_MIME_CSS:/^text\/css\b/i,
-    REGEX_MIME_XML:/^application\/rss\+xml\b/i,
+    REGEX_MIME_XML: /^application\/rss\+xml\b/i,
 
     //Source parsing
     REGEX_LINK: /<a[^>]+?href=['"]([^'"{}]*?)['"]/ig,
@@ -26,7 +29,7 @@ const reg = {
     REGEX_URL_FULL: /^(([a-z0-9]+)\:\/\/)([^\/\s]+\.[^\/\s]+)(.+\/)?([^\.\s]*?(\..+?)?)([?#].*)?$/i, //Requires absolute URL
 }
 
-async function parseContent(result){
+async function parseContent(result, options, state){
     // console.log(`result`, result)
     const contentType = get(result, `headers.content-type`)
     let contents = result.data || ``
@@ -34,40 +37,40 @@ async function parseContent(result){
     let filetype
 
     // Parse links from sitemap file
-    // This will recrawl, but it's cleaner since the sitemap could be multiple files
     if(reg.REGEX_MIME_XML.test(contentType)){
         links = await getSitemapLinks(result.config.url, 1000)
         filetype = `xml`
     }
 
+
+    // This will recrawl, but it's cleaner since the sitemap could be multiple files
+    // if(reg.REGEX_MIME_XML.test(contentType)){
+    //     links = await getSitemapLinks(result.config.url, 1000)
+    //     filetype = `xml`
+    // }
+
     // Parse links from HTML file
     if(reg.REGEX_MIME_HTML.test(contentType)){
-        links = []
-        const matches = contents.matchAll(reg.REGEX_LINK)
-        let match = matches.next()
-        while(true){
-            const value = get(match, `value.1`)
-            if(value){
-                links.push(value)
-            }
-            if(match.done) break
-            match = matches.next()
-        }
         filetype = `html`
-    }
+        contents = contents.replace(reg.REGEX_LINK, (str, link) => {
+            // Exit early if unwanted link
+            if(link.indexOf(`#`) === 0) return str
+            if(reg.REGEX_URL_ACTION.test(link)) return str
 
-    // Remove strings that aren't links
-    const filteredLinks = []
-    links.forEach(link => {
-        if(link.indexOf(`#`) === 0) return false
-        if(reg.REGEX_URL_ACTION.test(link)) return false
-        // Make relative URLs absolute
-        if(!reg.REGEX_URL_IS_ABSOLUTE.test(link)){
-            link = makeUrlAbsolute(link, getUrlBase(result.config.url), result.config.url)
-        }
-        filteredLinks.push(link)
-    })
-    links = filteredLinks
+            if(!reg.REGEX_URL_IS_ABSOLUTE.test(link)){
+                // Not sure if this second argument is correct, might need to get base URL from "link"?
+                link = makeUrlAbsolute(link, getUrlBase(result.config.url), result.config.url)
+            }
+
+            const parsed = parse(link)
+            const domain = parsed.hostname
+            const domainOptions = find(options.domains, { domain })
+            if(!domainOptions) return str
+
+            links.push(link)
+            return str
+        })
+    }
 
     return { links, contents, filetype }
     

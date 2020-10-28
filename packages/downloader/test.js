@@ -3,10 +3,13 @@ const download = require(`./src/index`)
 async function go(){
     console.log(`go()`)
     await download({
-        entry: [`https://smarterlabs.webflow.io/sitemap.xml`],
+        entry: [
+            `https://smarterlabs.webflow.io/sitemap.xml`,
+            // `https://smarterlabs.webflow.io/`,
+        ],
         domains: [
           { domain: `smarterlabs.webflow.io`, path: `/` },
-          { domain: `assets.website-files.com`, path: `assets` },
+          { domain: `assets.website-files.com`, path: `/assets` },
         ],
     })
 }
