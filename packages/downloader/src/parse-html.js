@@ -8,7 +8,7 @@ const linkEls = {
 	source: `srcset`,
 }
 
-module.exports = async function parseHtml(data){
+module.exports = async function parseHtml(data, from){
 	const $ = cheerio.load(data, { decodeEntities: false })
 
 	for(let tag in linkEls){
@@ -18,8 +18,8 @@ module.exports = async function parseHtml(data){
 			const node = $(el)
 			const url = node.attr(attr)
 			if(url){
-				this.addToQueue(url)
-				const newUrl = this.convertUrl(url)
+				this.addToQueue(url, from)
+				const newUrl = this.convertUrl(url, true)
 				node.attr(attr, newUrl)
 			}
 		})
