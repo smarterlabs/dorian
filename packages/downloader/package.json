@@ -14,7 +14,8 @@
     "download": "^8.0.0",
     "fs-extra": "^9.0.1",
     "is-relative-url": "^3.0.0",
-    "lodash": "^4.17.20"
+    "lodash": "^4.17.20",
+    "replace-css-url": "^1.2.6"
   },
   "devDependencies": {
     "serve": "^11.3.2"

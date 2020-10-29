@@ -22,6 +22,13 @@ module.exports = async function parse(url){
 		const newContents = await this.parseHtml(result.data, url)
 		await this.writeFile(url, newContents, `html`)
 	}
+	// Parse CSS
+	else if(contentType.indexOf(`text/css`) === 0){
+		console.log(`Parsing "${url}" as CSS`)
+		const result = await axios.get(url)
+		const newContents = await this.parseCss(result.data, url)
+		await this.writeFile(url, newContents, `css`)
+	}
 	// Download
 	else{
 		console.log(`Not parsing "${url}"`)
