@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "lerna run build --stream --scope @smarterlabs/*",
+    "build": "lerna run build --stream",
     "clean": "lerna run clean --stream --no-sort",
     "dev": "yarn dev:sandbox",
     "dev:all": "yarn run build && lerna run dev --parallel --stream --no-sort",
