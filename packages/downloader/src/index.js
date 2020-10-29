@@ -3,6 +3,7 @@ const { join } = require(`path`)
 const addToQueue = require(`./add-to-queue`)
 const parseXml = require(`./parse-xml`)
 const parseHtml = require(`./parse-html`)
+const parseCss = require(`./parse-css`)
 const parse = require(`./parse`)
 const writeFile = require(`./write-file`)
 
@@ -32,6 +33,7 @@ Downloader.prototype = {
 	addToQueue,
 	parseXml,
 	parseHtml,
+	parseCss,
 	writeFile,
 	findDomainPath,
 }

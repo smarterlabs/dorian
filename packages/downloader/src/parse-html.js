@@ -5,7 +5,7 @@ const linkEls = {
 	link: `href`,
 	script: `src`,
 	img: `src`,
-	source: `srcset`,
+	// source: `srcset`,
 }
 
 module.exports = async function parseHtml(data, from){
