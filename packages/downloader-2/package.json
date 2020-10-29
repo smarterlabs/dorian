@@ -1,0 +1,15 @@
+{
+  "name": "downloader-2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "node test"
+  },
+  "dependencies": {
+    "axios": "^0.21.0",
+    "cheerio": "^1.0.0-rc.3",
+    "fs-extra": "^9.0.1",
+    "lodash": "^4.17.20"
+  }
+}
