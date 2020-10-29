@@ -1,10 +1,10 @@
 const download = require(`./src`)
 
 download({
-	entry: [ `https://smarterlabs.webflow.io/sitemap.xml` ],
+	entry: [ `https://www.playcornhole.org/sitemap.xml` ],
 	domains: [
-		{ domain: `smarterlabs.webflow.io`, path: `/` },
-		{ domain: `assets.website-files.com`, path: `/assets` },
+		{ domain: `www.playcornhole.org`, path: `/` },
+		{ domain: `i.shgcdn.com`, path: `/assets` },
 	],
-	replaceOrigin: `https://smarterlabs.com/`,
+	replaceOrigin: `https://playcornhole.netlify.app/`,
 })

@@ -12,6 +12,7 @@ const defaultOptions = {
 	dist: `dist`,
 	domains: [],
 	protocol: `https`,
+	concurrency: 5,
 }
 
 function Downloader(userOptions){
@@ -22,6 +23,7 @@ function Downloader(userOptions){
 	for(let i in options){
 		this[i] = options[i]
 	}
+	this.parsing = 0
 	this.queue = [ ...options.entry ]
 	this.knownUrls = [ ...options.entry ]
 }
@@ -39,12 +41,21 @@ Downloader.prototype = {
 }
 
 async function parseNext(){
+	const queueLength = this.queue.length
 	if(this.queue.length){
+		this.parsing++
+		const total = this.knownUrls.length
+		const progress = total - queueLength
+		console.log(`Parsing ${progress}/${total}`)
 		const url = this.queue.shift()
+		if(this.parsing < this.concurrency){
+			this.parseNext()
+		}
 		await this.parse(url)
+		this.parsing--
 		this.parseNext()
 	}
-	else{
+	else if(!this.parsing){
 		console.log(`Done!`)
 	}
 }

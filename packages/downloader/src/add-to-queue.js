@@ -11,7 +11,6 @@ module.exports = function addToQueue(url, from){
 		url = resolve(from, url)
 	}
 	if(knownUrls.indexOf(url) === -1 && url.charAt(0) != `#`){
-		console.log(`Finding domain path for "${url}"`)
 		const domainPath = this.findDomainPath(url)
 		if(domainPath){
 			knownUrls.push(url)

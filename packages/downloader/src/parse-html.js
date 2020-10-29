@@ -1,11 +1,11 @@
 const cheerio = require(`cheerio`)
+const srcset = require(`srcset`)
 
 const linkEls = {
 	a: `href`,
 	link: `href`,
 	script: `src`,
 	img: `src`,
-	// source: `srcset`,
 }
 
 module.exports = async function parseHtml(data, from){
@@ -21,6 +21,20 @@ module.exports = async function parseHtml(data, from){
 				this.addToQueue(url, from)
 				const newUrl = this.convertUrl(url, true)
 				node.attr(attr, newUrl)
+			}
+		})
+
+		// Parse srcset
+		$(`img`).each((_, el) => {
+			const node = $(el)
+			const str = node.attr(`srcset`)
+			if(str){
+				const parsed = srcset.parse(str)
+				parsed.forEach(obj => {
+					obj.url = this.convertUrl(obj.url, true)
+				})
+				const newStr = srcset.stringify(parsed)
+				node.attr(`srcset`, newStr)
 			}
 		})
 	}
