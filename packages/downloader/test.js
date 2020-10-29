@@ -8,5 +8,5 @@ download({
 		{ domain: `smarterlabs.webflow.io`, path: `/` },
 		{ domain: `assets.website-files.com`, path: `/assets` },
 	],
-	replaceOrigin: `https://smarterlabs/`,
+	replaceOrigin: `https://smarterlabs.com/`,
 })

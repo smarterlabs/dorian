@@ -48,12 +48,15 @@ async function parseNext(){
 }
 
 
-function convertUrl(url){
+function convertUrl(url, makeRelative){
 	if(url.indexOf(`//`) === 0 || url.indexOf(`http://`) === 0 || url.indexOf(`https://`) === 0){
-		return this.convertAbsoluteUrl(url)
+		if(this.findDomainPath(url)){
+			return this.convertAbsoluteUrl(url, makeRelative)
+		}
 	}
+	return url
 }
-function convertAbsoluteUrl(url){
+function convertAbsoluteUrl(url, makeRelative){
 	if(url.indexOf(`//`) === 0){
 		url = `${this.protocol}:${url}`
 	}
@@ -72,15 +75,21 @@ function convertAbsoluteUrl(url){
 	}
 
 	// If changing the origin
-	if(this.replaceOrigin){
+	if(this.replaceOrigin && !makeRelative){
 		const path = url.replace(obj.origin, ``)
 		url = resolve(this.replaceOrigin, path)
+	}
+	else{
+		url = url.replace(obj.origin, ``)
 	}
 
 	return url
 }
 
 function findDomainPath(url){
+	if(url.indexOf(`//`) === 0){
+		url = `${this.protocol}:${url}`
+	}
 	let { host } = new URL(url)
 	for(let i = this.domains.length; i--;){
 		const { domain, path } = this.domains[i]

@@ -17,7 +17,6 @@ dorian({
 		{ domain: `originsite.com`, path: `/` },
 		{ domain: `assets.cdn.com`, path: `/assets` },
 	],
-    replaceOrigin: `https://newsite.com/`,
     dist: `dist`,
 })
 ```

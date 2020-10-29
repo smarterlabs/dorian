@@ -1,3 +1,4 @@
+const download = require(`download`)
 const { outputFile } = require(`fs-extra`)
 const { join, extname } = require(`path`)
 
@@ -19,16 +20,14 @@ module.exports = async function writeFile(url, contents, ext){
 		}
 		pathname = `${pathname}index.html`
 	}
-	const outputPath = join(this.dist, domainPath, pathname)
+	const outputPath = join(this.dist, domainPath, decodeURIComponent(pathname))
 	console.log(`Writing`, outputPath, `...`)
 	if(!contents){
-		console.error(`No contents in "${url}"`)
-		process.exit(1)
+		const data = await download(url)
+		await outputFile(outputPath, data)
 	}
-	if(ext === `jpg`){
-		console.log(`jpg contents`, contents)
-		contents = Buffer.from(contents.replace(/^data:image\/\w+;base64,/, ``), `base64`)
+	else{
+		await outputFile(outputPath, contents)
 	}
-	await outputFile(outputPath, contents)
 	console.log(`Wrote`, outputPath)
 }
