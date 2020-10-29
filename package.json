@@ -15,6 +15,7 @@
     "lint": "eslint ./",
     "lint:fix": "eslint ./ --fix",
     "publish": "yarn build && lerna publish from-package --yes",
+    "serve": "lerna run serve --stream --no-sort",
     "stop": "sudo killall -9 node",
     "version": "lerna version"
   },

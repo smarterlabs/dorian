@@ -1,9 +1,10 @@
 {
-  "name": "downloader-2",
+  "name": "@smarterlabs/downloader",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "serve": "serve dist",
     "test": "node test"
   },
   "dependencies": {
@@ -11,5 +12,8 @@
     "cheerio": "^1.0.0-rc.3",
     "fs-extra": "^9.0.1",
     "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "serve": "^11.3.2"
   }
 }
