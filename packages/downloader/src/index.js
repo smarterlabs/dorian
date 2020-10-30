@@ -46,7 +46,7 @@ async function parseNext(){
 		this.parsing++
 		const total = this.knownUrls.length
 		const progress = total - queueLength
-		console.log(`Parsing ${progress}/${total}`)
+		console.log(`Progress: ${progress}/${total}`)
 		const url = this.queue.shift()
 		if(this.parsing < this.concurrency){
 			this.parseNext()

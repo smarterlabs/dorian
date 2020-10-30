@@ -31,7 +31,9 @@ module.exports = async function parseHtml(data, from){
 			if(str){
 				const parsed = srcset.parse(str)
 				parsed.forEach(obj => {
-					obj.url = this.convertUrl(obj.url, true)
+					this.addToQueue(obj.url, from)
+					const newUrl = this.convertUrl(obj.url, true)
+					obj.url = newUrl
 				})
 				const newStr = srcset.stringify(parsed)
 				node.attr(`srcset`, newStr)

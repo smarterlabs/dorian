@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "clean": "del-cli dist",
     "serve": "serve dist",
     "test": "node test"
   },
@@ -19,6 +20,7 @@
     "srcset": "^3.0.0"
   },
   "devDependencies": {
+    "del-cli": "^3.0.1",
     "serve": "^11.3.2"
   }
 }
