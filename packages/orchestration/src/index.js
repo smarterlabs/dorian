@@ -3,7 +3,7 @@ const download = require(`@app/downloader`)
 // let siteUrl = `https://business-starter-template.webflow.io`
 // let destinationOrigin = `https://smarterlabs.com/`
 let siteUrl = process.env.SOURCE_URL
-let destinationOrigin = process.env.DESTINATION_URL
+let destinationOrigin = process.env.URL
 
 // Exit if environment variables are missing
 if(!siteUrl){
