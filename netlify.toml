@@ -1,0 +1,7 @@
+[build]
+  command = "yarn build"
+  publish = "dist/"
+
+[template.environment]
+  SOURCE_URL = ""
+  DESTINATION_URL = ""
