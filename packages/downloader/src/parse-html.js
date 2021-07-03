@@ -24,6 +24,15 @@ module.exports = async function parseHtml(data, from){
 			}
 		})
 
+		// Parse styles
+		$(`[style]`).each((_, el) => {
+			const node = $(el)
+			let style = node.attr(`style`)
+			style = style.replace(/"/g, `&quot;`)
+			node.attr(`style`, style)
+			// console.log(`style`, style)
+		})
+
 		// Parse srcset
 		$(`img`).each((_, el) => {
 			const node = $(el)

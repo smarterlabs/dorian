@@ -1,19 +1,18 @@
 const download = require(`@app/downloader`)
 
-// let siteUrl = `https://business-starter-template.webflow.io`
-// let destinationOrigin = `https://smarterlabs.com/`
-let siteUrl = process.env.SOURCE_URL
-let destinationOrigin = process.env.URL
 
 // Exit if environment variables are missing
-if(!siteUrl){
+if(!process.env.SOURCE_URL){
 	console.error(`No "SOURCE_URL" environment variable set.`)
 	process.exit(1)
 }
-if(!destinationOrigin){
-	console.error(`No "DESTINATION_URL" environment variable set.`)
+if(!process.env.URL){
+	console.error(`No "URL" environment variable set.`)
 	process.exit(1)
 }
+
+let siteUrl = process.env.SOURCE_URL
+let destinationOrigin = process.env.URL
 
 // Normalize links
 if(siteUrl.indexOf(`://`) === -1){
