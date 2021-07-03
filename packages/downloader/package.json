@@ -2,7 +2,6 @@
   "name": "@app/downloader",
   "version": "1.0.0",
   "main": "src/index.js",
-  "license": "MIT",
   "scripts": {
     "clean": "del-cli dist",
     "serve": "serve dist",

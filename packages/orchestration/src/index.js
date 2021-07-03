@@ -15,4 +15,5 @@ download({
 	],
 	replaceOrigin: destinationOrigin,
 	concurrency: 10,
+	dist: `../../dist`,
 })

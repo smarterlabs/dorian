@@ -1,11 +1,9 @@
 {
-  "name": "@app/sandbox",
+  "name": "@app/orchestration",
   "version": "1.0.0",
   "main": "src/index.js",
-  "license": "MIT",
   "scripts": {
     "build": "node src/index",
-    "clean": "del dist",
     "serve": "serve dist"
   },
   "dependencies": {
