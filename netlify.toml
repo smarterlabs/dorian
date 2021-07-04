@@ -2,5 +2,8 @@
   command = "yarn build"
   publish = "dist/"
 
+[template]
+  incoming-hooks = ["Webflow"]
+
 [template.environment]
   SOURCE_URL = ""
