@@ -4,7 +4,7 @@
   "main": "index.js",
   "repository": "git@github.com:smarterlabs/dorian.git",
   "author": "Kennedy Rose <kennedyianrose@gmail.com>",
-  "license": "MIT",
+  "license": "PURCHASE AT cryolayer.com",
   "private": true,
   "scripts": {
     "build": "yarn run clean && cd packages/orchestration && dotenv -e ../../.env -- npm run build",
