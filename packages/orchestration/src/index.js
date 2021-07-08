@@ -28,6 +28,15 @@ if(destinationOrigin[destinationOrigin.length - 1] !== `/`){
 	destinationOrigin = destinationOrigin + `/`
 }
 
+function webflowPlugin(){
+	return function(){
+		this.on(`parseHtml`, ({ $ }) => {
+			$(`html`).removeAttr(`data-wf-domain`)
+		})
+	}
+}
+
+
 // Download site
 download({
 	entry: [
@@ -41,4 +50,7 @@ download({
 	replaceOrigin: destinationOrigin,
 	concurrency: 10,
 	dist: `../../dist`,
+	plugins: [
+		webflowPlugin(),
+	],
 })

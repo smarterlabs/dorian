@@ -50,5 +50,7 @@ module.exports = async function parseHtml(data, from){
 		})
 	}
 
+	await this.emit(`parseHtml`, { $ })
+
 	return $.html()
 }

@@ -6,6 +6,8 @@ const parseHtml = require(`./parse-html`)
 const parseCss = require(`./parse-css`)
 const parse = require(`./parse`)
 const writeFile = require(`./write-file`)
+const { on, emit } = require(`./events`)
+
 
 const defaultOptions = {
 	entry: [],
@@ -13,6 +15,7 @@ const defaultOptions = {
 	domains: [],
 	protocol: `https`,
 	concurrency: 5,
+	plugins: [],
 }
 
 function Downloader(userOptions){
@@ -26,6 +29,10 @@ function Downloader(userOptions){
 	this.parsing = 0
 	this.queue = [ ...options.entry ]
 	this.knownUrls = [ ...options.entry ]
+	this.events = {}
+	options.plugins.forEach(plugin => {
+		plugin.bind(this)()
+	})
 }
 Downloader.prototype = {
 	convertUrl,
@@ -38,6 +45,8 @@ Downloader.prototype = {
 	parseCss,
 	writeFile,
 	findDomainPath,
+	emit,
+	on,
 }
 
 async function parseNext(){
