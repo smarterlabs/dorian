@@ -7,7 +7,7 @@ Dorian is a static site generator that converts a website into a static site by 
 Make sure you have 2 environment variables set:
 
 - `URL`: The destination URL
-- `SOURCE_URL`: The original source URL to be scraped
+- `WEBFLOW_URL`: The original source URL to be scraped
 
 To do this, you can create a `.env` file with the contents of `.env.template`. and fill in the variables.
 

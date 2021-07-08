@@ -2,8 +2,8 @@ const download = require(`@app/downloader`)
 
 
 // Exit if environment variables are missing
-if(!process.env.SOURCE_URL){
-	console.error(`No "SOURCE_URL" environment variable set.`)
+if(!process.env.WEBFLOW_URL){
+	console.error(`No "WEBFLOW_URL" environment variable set.`)
 	process.exit(1)
 }
 if(!process.env.URL){
@@ -11,7 +11,7 @@ if(!process.env.URL){
 	process.exit(1)
 }
 
-let siteUrl = process.env.SOURCE_URL
+let siteUrl = process.env.WEBFLOW_URL
 let destinationOrigin = process.env.URL
 
 // Normalize links

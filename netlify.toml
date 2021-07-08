@@ -6,4 +6,4 @@
   incoming-hooks = ["Webflow"]
 
 [template.environment]
-  SOURCE_URL = ""
+  WEBFLOW_URL = ""
