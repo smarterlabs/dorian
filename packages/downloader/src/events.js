@@ -6,7 +6,6 @@ exports.emit = async function(label, ...args){
 	}
 }
 exports.on = async function(label, fn){
-	console.log(`this`, this)
 	if(!(label in this.events)){
 		this.events[label] = []
 	}

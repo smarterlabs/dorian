@@ -22,3 +22,10 @@ It should output the files to the `dist` folder in the project root. You can tes
 ```bash
 yarn serve
 ```
+
+# Excluding pages from the sitemap
+
+In Webflow, add this custom attribute to the "body" tag of the page you want to exclude from the sitemap:
+
+Name: `sitemap`
+Value: `no`

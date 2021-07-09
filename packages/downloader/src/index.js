@@ -65,6 +65,7 @@ async function parseNext(){
 		this.parseNext()
 	}
 	else if(!this.parsing){
+		await this.emit(`complete`)
 		console.log(`Done!`)
 	}
 }
