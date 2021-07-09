@@ -64,7 +64,10 @@ function webflowPlugin(){
 
 			for(let xmlPath of xmlFiles){
 				const xmlStr = await readFile(xmlPath, `utf8`)
-				const $ = cheerio.load(xmlStr, { decodeEntities: false })
+				const $ = cheerio.load(xmlStr, {
+					decodeEntities: false,
+					xmlMode: true,
+				})
 				$(`url`).each((_, el) => {
 					const $url = $(el)
 					const loc = $url.find(`loc`)

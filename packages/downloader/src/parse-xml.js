@@ -1,7 +1,10 @@
 const cheerio = require(`cheerio`)
 
 module.exports = async function parseXml(data){
-	const $ = cheerio.load(data, { decodeEntities: false })
+	const $ = cheerio.load(data, {
+		decodeEntities: false,
+		xmlMode: true,
+	})
 	$(`loc`).each((_, el) => {
 		const loc = $(el)
 		const url = loc.text()
@@ -11,5 +14,6 @@ module.exports = async function parseXml(data){
 			loc.html(newUrl)
 		}
 	})
-	return $.xml()
+	const newXml = $.xml()
+	return newXml
 }
