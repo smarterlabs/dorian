@@ -55,6 +55,8 @@ function webflowPlugin(){
 		})
 
 		this.on(`complete`, async () => {
+
+			// Remove excluded pages from sitemap
 			excludeFromSitemap = excludeFromSitemap.map(url => {
 				url = this.convertUrl(url)
 				return url
@@ -81,6 +83,15 @@ function webflowPlugin(){
 				await outputFile(xmlPath, newXml)
 			}
 
+
+			// Write redirects file
+			const template = await readFile(join(__dirname, `_redirects.template`), `utf8`)
+			let origin = process.env.WEBFLOW_URL
+			while(origin[origin.length - 1] === `/`){
+				origin = origin.substring(0, origin.length - 1)
+			}
+			let redirectsData = template.replace(/{{domain}}/g, origin)
+			await outputFile(join(dist, `_redirects`), redirectsData)
 
 		})
 	}

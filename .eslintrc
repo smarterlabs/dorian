@@ -1,3 +1,7 @@
 {
-	"extends": "@smarterlabs/eslint-config"
+	"extends": "@smarterlabs/eslint-config",
+	"rules" : {
+		"template-curly-spacing" : "off",
+		"indent" : "off"
+	 }
 }
