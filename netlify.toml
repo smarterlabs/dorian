@@ -7,3 +7,21 @@
 
 [template.environment]
   WEBFLOW_URL = ""
+
+[[plugins]]
+package = "netlify-plugin-image-optim"
+
+[[plugins]]
+package = "netlify-plugin-inline-critical-css"
+
+[[plugins]]
+package = "netlify-plugin-subfont"
+  [plugins.inputs]
+  entryPoints = [
+    "*.html",
+  ]
+  recursive = true
+  fontDisplay = "swap"
+  inlineCss = false
+  inlineFonts = false
+  fallbacks = true
