@@ -16,12 +16,3 @@ package = "netlify-plugin-inline-critical-css"
 
 [[plugins]]
 package = "netlify-plugin-subfont"
-  [plugins.inputs]
-  entryPoints = [
-    "*.html",
-  ]
-  recursive = true
-  fontDisplay = "swap"
-  inlineCss = false
-  inlineFonts = false
-  fallbacks = true
