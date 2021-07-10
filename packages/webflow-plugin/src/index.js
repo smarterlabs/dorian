@@ -6,15 +6,41 @@ const posthtml = require(`posthtml`)
 const posthtmlWebp = require(`posthtml-webp`)
 const webp = require(`webp-converter`)
 const get = require(`lodash/get`)
+const postcss = require('postcss')
+const postcssWebp = require(`webp-in-css/plugin`)
+
 
 webp.grant_permission()
 
 module.exports = function webflowPlugin(){
 	let excludeFromSitemap = []
 	return function(){
+		
+		this.on(`parseCss`, async ({ data }) => {
+			const result = await postcss([postcssWebp({
+				rename: oldName => {
+					// Extracts url from CSS string background image
+					const oldUrl = oldName.match(/url\(['"]?([^'"]+)['"]?\)/)[1]
+					const newUrl = `${oldUrl}.webp`
+					const newName = oldName.replace(oldUrl, newUrl)
+					console.log(`newName`, newName)
+					return newName
+				}
+			})])
+    			.process(data, { from: undefined })
+			return result.css
+		})
+
 		this.on(`parseHtml`, ({ $, url }) => {
+			const $body = $(`body`)
+			const $head = $(`head`)
+			const $html = $(`html`)
+
+			// Polyfill for webp
+			$body.append(`<script>document.body.classList.remove('no-js');var i=new Image;i.onload=i.onerror=function(){document.body.classList.add(i.height==1?"webp":"no-webp")};i.src="data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==";</script>`)
+
 			// Removes the "Powered by Webflow" link for paid accounts
-			$(`html`).removeAttr(`data-wf-domain`)
+			$html.removeAttr(`data-wf-domain`)
 
 			// Make webfonts.js async
 			let webfontsJs = `{}`
@@ -36,10 +62,9 @@ module.exports = function webflowPlugin(){
 					$el.remove()
 				}
 			})
-			$(`head`).append(`<script>WebFontConfig=${webfontsJs},function(e){var o=e.createElement("script"),t=e.scripts[0];o.src="${webfontsSrc}",o.async=!0,t.parentNode.insertBefore(o,t)}(document);</script>`)
+			$head.append(`<script>WebFontConfig=${webfontsJs},function(e){var o=e.createElement("script"),t=e.scripts[0];o.src="${webfontsSrc}",o.async=!0,t.parentNode.insertBefore(o,t)}(document);</script>`)
 
 			// Find links to remove from sitemap
-			const $body = $(`body`)
 			let includeInSitemap = $body.attr(`sitemap`)
 			if(includeInSitemap){
 				$body.removeAttr(`sitemap`)
@@ -62,15 +87,17 @@ module.exports = function webflowPlugin(){
 			console.log(`Adding webp support...`)
 			const htmlFiles = await globby(`${dist}/**/*.html`)
 			for(let file of htmlFiles){
-				const html = await readFile(file, `utf8`)
+				let html = await readFile(file, `utf8`)
+
+				// Add webp support to image tags
 				const result = await posthtml()
 					.use(posthtmlWebp({
 						extensionIgnore: [`svg`],
 					}))
 					.process(html)
-				if(result){
-					await outputFile(file, result.html)
-				}
+				html = result.html
+
+				await outputFile(file, html)
 			}
 
 			// Create webp images

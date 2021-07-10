@@ -11375,7 +11375,7 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.11, postcss@^7.0.14, postcss@^7.0.1
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
-postcss@^8.3.0:
+postcss@^8.3.0, postcss@^8.3.5:
   version "8.3.5"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.3.5.tgz#982216b113412bc20a86289e91eb994952a5b709"
   integrity sha512-NxTuJocUhYGsMiMFHDUkmjSKT3EdH4/WbGF6GCi1NDGk+vbcUTun4fpbOqaPtD8IIsztA2ilZm2DhYCuyN58gA==
@@ -14329,6 +14329,11 @@ webp-converter@^2.3.3:
   integrity sha512-2p4XvPCIQ/CbUztEFA9vdkILVrRTdMtMxFpQTxlnPc3qx14MV5wnpVvK7m6pG70QdeL+Ser0+Tp843ONwh8VbQ==
   dependencies:
     uuid "^8.3.2"
+
+webp-in-css@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/webp-in-css/-/webp-in-css-0.6.0.tgz#8ab431623ac33a36acf434bc8301ca3c219ab54f"
+  integrity sha512-5jceGWKzGGn15YQnnshN88JpdxVwpH5+cddq37NRB51xj084Fnj61IQUHsx0hihLpuYyt76U4IyH+L04D5zkOg==
 
 whatwg-encoding@^1.0.1, whatwg-encoding@^1.0.5:
   version "1.0.5"

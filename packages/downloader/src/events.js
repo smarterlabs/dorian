@@ -1,7 +1,13 @@
-exports.emit = async function(label, ...args){
+exports.emit = async function(label, obj){
 	if(this.events[label]){
 		for(let fn of this.events[label]){
-			await fn(...args)
+			const newData = await fn(obj)
+			if(newData !== undefined){
+				obj.data = newData
+			}
+		}
+		if(obj && obj.data){
+			return obj.data
 		}
 	}
 }
