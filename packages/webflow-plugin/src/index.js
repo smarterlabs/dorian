@@ -62,6 +62,15 @@ module.exports = function webflowPlugin(){
 			})
 			$head.append(`<script>WebFontConfig=${webfontsJs},function(e){var o=e.createElement("script"),t=e.scripts[0];o.src="${webfontsSrc}",o.async=!0,t.parentNode.insertBefore(o,t)}(document);</script>`)
 
+			// Fix cross-origin links
+			$(`a`).each((i, el) => {
+				const $el = $(el)
+				const href = $el.attr(`href`)
+				if (href && href.indexOf(`://`) > -1) {
+					$el.attr(`rel`, `noopener noreferrer`)
+				}
+			})
+
 			// Find links to remove from sitemap
 			let includeInSitemap = $body.attr(`sitemap`)
 			if(includeInSitemap){
