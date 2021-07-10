@@ -18,15 +18,10 @@ module.exports = function webflowPlugin(){
 		this.on(`parseCss`, async ({ data }) => {
 			const result = await postcss([postcssWebp({
 				rename: oldName => {
-					console.log(`Renaming...`)
-					process.exit(0)
 					// Extracts url from CSS string background image
 					const oldUrl = oldName.match(/url\(['"]?([^'"]+)['"]?\)/)[1]
 					const newUrl = `${oldUrl}.webp`
 					const newName = oldName.replace(oldUrl, newUrl)
-					console.log(`oldName`, oldName)
-					console.log(`newName`, newName)
-					process.exit(0)
 					return newName
 				}
 			})])
