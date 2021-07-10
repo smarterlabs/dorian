@@ -2,7 +2,7 @@
   command = "yarn build"
   publish = "dist/"
 [build.environment]
-  NETLIFY_USE_YARN = true
+  NETLIFY_USE_YARN = "true"
 
 [template]
   incoming-hooks = ["Webflow"]
