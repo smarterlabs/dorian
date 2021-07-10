@@ -35,7 +35,7 @@
     "dotenv-cli": "^4.0.0",
     "eslint": "^7.30.0",
     "husky": "^4.2.0",
-    "lerna": "^3.20.2",
+    "lerna": "^3.22.1",
     "lint-staged": "^11.0.0",
     "netlify-plugin-image-optim": "^0.4.0",
     "netlify-plugin-inline-critical-css": "^1.2.0",
