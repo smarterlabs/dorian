@@ -23,7 +23,6 @@ module.exports = function webflowPlugin(){
 				const $el = $(el)
 				const src = $el.attr(`src`)
 				const contents = get(el, `children.0.data`, ``)
-				console.log(`contents`, contents)
 				if (
 					src &&
 					src.indexOf(`googleapis.com`) > -1 &&
