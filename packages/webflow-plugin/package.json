@@ -8,6 +8,7 @@
     "serve": "serve dist"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.10",
     "fs-extra": "^10.0.0",
     "globby": "^11.0.4",

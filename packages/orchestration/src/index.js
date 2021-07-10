@@ -32,6 +32,7 @@ if(destinationOrigin[destinationOrigin.length - 1] !== `/`){
 download({
 	entry: [
 		siteUrl,
+		`${siteUrl}/robots.txt`,
 		`${siteUrl}/sitemap.xml`,
 	],
 	domains: [

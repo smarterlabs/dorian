@@ -8,6 +8,8 @@ const webp = require(`webp-converter`)
 const get = require(`lodash/get`)
 const postcss = require('postcss')
 const postcssWebp = require(`webp-in-css/plugin`)
+const axios = require(`axios`)
+const { exists } = require('fs-extra')
 
 webp.grant_permission()
 
@@ -89,6 +91,13 @@ module.exports = function webflowPlugin(){
 
 		this.on(`complete`, async () => {
 			const dist = this.dist
+
+			// Create robots.txt if it doesn't exist
+			const robotsExists = await exists(join(dist, `robots.txt`))
+			if (!robotsExists) {
+				console.log(`Creating robots.txt...`)
+				await outputFile(join(dist, `robots.txt`), ``)
+			}
 
 			// Add webp support to HTML files
 			console.log(`Adding webp support...`)
