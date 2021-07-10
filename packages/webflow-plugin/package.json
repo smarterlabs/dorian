@@ -11,6 +11,7 @@
     "cheerio": "^1.0.0-rc.10",
     "fs-extra": "^10.0.0",
     "globby": "^11.0.4",
+    "lodash": "^4.17.21",
     "posthtml": "^0.16.4",
     "posthtml-webp": "^2.1.0",
     "webp-converter": "^2.3.3"

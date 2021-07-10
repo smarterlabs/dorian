@@ -5,6 +5,7 @@ const { readFile, outputFile } = require(`fs-extra`)
 const posthtml = require(`posthtml`)
 const posthtmlWebp = require(`posthtml-webp`)
 const webp = require(`webp-converter`)
+const get = require(`lodash/get`)
 
 webp.grant_permission()
 
@@ -14,6 +15,29 @@ module.exports = function webflowPlugin(){
 		this.on(`parseHtml`, ({ $, url }) => {
 			// Removes the "Powered by Webflow" link for paid accounts
 			$(`html`).removeAttr(`data-wf-domain`)
+
+			// Make webfonts.js async
+			let webfontsJs = `{}`
+			let webfontsSrc = ``
+			$(`script`).each((i, el) => {
+				const $el = $(el)
+				const src = $el.attr(`src`)
+				const contents = get(el, `children.0.data`, ``)
+				console.log(`contents`, contents)
+				if (
+					src &&
+					src.indexOf(`googleapis.com`) > -1 &&
+					src.indexOf(`webfont.js`) > -1
+				) {
+					webfontsSrc = src
+					$el.remove()
+				}
+				if(contents && contents.indexOf(`WebFont.load({`) === 0){
+					webfontsJs = contents.replace(`WebFont.load(`, ``).replace(`);`, ``)
+					$el.remove()
+				}
+			})
+			$(`head`).append(`<script>WebFontConfig=${webfontsJs},function(e){var o=e.createElement("script"),t=e.scripts[0];o.src="${webfontsSrc}",o.async=!0,t.parentNode.insertBefore(o,t)}(document);</script>`)
 
 			// Find links to remove from sitemap
 			const $body = $(`body`)
