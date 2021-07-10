@@ -1,5 +1,5 @@
 {
-  "name": "@app/orchestration",
+  "name": "@app/webflow-plugin",
   "version": "1.0.0",
   "license": "PURCHASE AT cryolayer.com",
   "main": "src/index.js",
@@ -8,11 +8,12 @@
     "serve": "serve dist"
   },
   "dependencies": {
-    "@app/downloader": "*",
-    "@app/webflow-plugin": "*",
     "cheerio": "^1.0.0-rc.10",
     "fs-extra": "^10.0.0",
-    "globby": "^11.0.4"
+    "globby": "^11.0.4",
+    "posthtml": "^0.16.4",
+    "posthtml-webp": "^2.1.0",
+    "webp-converter": "^2.3.3"
   },
   "devDependencies": {
     "del-cli": "^4.0.0",
