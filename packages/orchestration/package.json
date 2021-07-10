@@ -1,6 +1,6 @@
 {
   "name": "@app/orchestration",
-  "version": "1.0.0",
+  "version": null,
   "license": "PURCHASE AT cryolayer.com",
   "main": "src/index.js",
   "scripts": {
