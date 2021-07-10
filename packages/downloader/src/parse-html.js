@@ -24,14 +24,17 @@ module.exports = async function parseHtml(data, from){
 			}
 		})
 
-		// Parse styles
-		$(`[style]`).each((_, el) => {
-			const node = $(el)
-			let style = node.attr(`style`)
-			style = style.replace(/"/g, `&quot;`)
-			node.attr(`style`, style)
-			// console.log(`style`, style)
-		})
+		// Loop through styles
+		const $styleEls = $(`[style]`)
+		for(let i = 0; i < $styleEls.length; i++){
+			const $el = $($styleEls[i])
+			let style = $el.attr(`style`)
+			if(style){
+				style = style.replace(/"/g, `'`)
+				const newStyle = await this.parseCss(style, from)
+				$el.attr(`style`, newStyle)
+			}
+		}
 
 		// Parse srcset
 		$(`img`).each((_, el) => {
