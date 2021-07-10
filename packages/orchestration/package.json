@@ -8,8 +8,8 @@
     "serve": "serve dist"
   },
   "dependencies": {
-    "@app/downloader": "*",
-    "@app/webflow-plugin": "*",
+    "@app/downloader": "^1.0.0",
+    "@app/webflow-plugin": "^1.0.0",
     "cheerio": "^1.0.0-rc.10",
     "fs-extra": "^10.0.0",
     "globby": "^11.0.4"
