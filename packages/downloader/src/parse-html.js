@@ -51,6 +51,17 @@ module.exports = async function parseHtml(data, from){
 				node.attr(`srcset`, newStr)
 			}
 		})
+
+		// Parse og:image
+		$(`meta[property="og:image"]`).each((_, el) => {
+			const node = $(el)
+			const url = node.attr(`content`)
+			if(url){
+				this.addToQueue(url, from)
+				const newUrl = this.convertUrl(url, true)
+				node.attr(`content`, newUrl)
+			}
+		})
 	}
 
 	await this.emit(`parseHtml`, { $, url: from })
