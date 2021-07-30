@@ -3,7 +3,7 @@ const webflowPlugin = require(`@app/webflow-plugin`)
 
 // Exit if environment variables are missing
 let siteUrl = process.env.WEBFLOW_URL
-let destinationOrigin = process.env.URL ||process.env.DEPLOY_URL
+let destinationOrigin = process.env.URL || process.env.DEPLOY_URL
 if(!siteUrl){
 	console.error(`No "WEBFLOW_URL" environment variable set.`)
 	process.exit(1)
