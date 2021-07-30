@@ -10,8 +10,8 @@
 [template.environment]
   WEBFLOW_URL = ""
 
-[[plugins]]
-package = "netlify-plugin-subfont"
+# [[plugins]]
+# package = "netlify-plugin-subfont"
 
 [[plugins]]
 package = "netlify-plugin-image-optim"
