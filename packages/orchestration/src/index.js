@@ -38,6 +38,7 @@ download({
 	domains: [
 		{ domain: siteUrl.split(`://`)[1], path: `/` },
 		{ domain: `assets.website-files.com`, path: `/assets` },
+		{ domain: `uploads-ssl.webflow.com`, path: `/assets` },
 	],
 	replaceOrigin: destinationOrigin,
 	concurrency: 10,
