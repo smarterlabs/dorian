@@ -43,26 +43,26 @@ module.exports = function webflowPlugin(){
 			$html.removeAttr(`data-wf-domain`)
 
 			// Make webfonts.js async
-			let webfontsJs = `{}`
-			let webfontsSrc = ``
-			$(`script`).each((i, el) => {
-				const $el = $(el)
-				const src = $el.attr(`src`)
-				const contents = get(el, `children.0.data`, ``)
-				if (
-					src &&
-					src.indexOf(`googleapis.com`) > -1 &&
-					src.indexOf(`webfont.js`) > -1
-				) {
-					webfontsSrc = src
-					$el.remove()
-				}
-				if(contents && contents.indexOf(`WebFont.load({`) === 0){
-					webfontsJs = contents.replace(`WebFont.load(`, ``).replace(`);`, ``)
-					$el.remove()
-				}
-			})
-			$head.append(`<script>WebFontConfig=${webfontsJs},function(e){var o=e.createElement("script"),t=e.scripts[0];o.src="${webfontsSrc}",o.async=!0,t.parentNode.insertBefore(o,t)}(document);</script>`)
+			// let webfontsJs = `{}`
+			// let webfontsSrc = ``
+			// $(`script`).each((i, el) => {
+			// 	const $el = $(el)
+			// 	const src = $el.attr(`src`)
+			// 	const contents = get(el, `children.0.data`, ``)
+			// 	if (
+			// 		src &&
+			// 		src.indexOf(`googleapis.com`) > -1 &&
+			// 		src.indexOf(`webfont.js`) > -1
+			// 	) {
+			// 		webfontsSrc = src
+			// 		$el.remove()
+			// 	}
+			// 	if(contents && contents.indexOf(`WebFont.load({`) === 0){
+			// 		webfontsJs = contents.replace(`WebFont.load(`, ``).replace(`);`, ``)
+			// 		$el.remove()
+			// 	}
+			// })
+			// $head.append(`<script>WebFontConfig=${webfontsJs},function(e){var o=e.createElement("script"),t=e.scripts[0];o.src="${webfontsSrc}",o.async=!0,t.parentNode.insertBefore(o,t)}(document);</script>`)
 
 			// Fix cross-origin links
 			$(`a`).each((i, el) => {
