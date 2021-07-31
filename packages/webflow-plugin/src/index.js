@@ -13,31 +13,42 @@ const { exists } = require('fs-extra')
 
 webp.grant_permission()
 
+// Check for webp support
+let useWebp = process.env.WEBP || true
+if(useWebp === `no` || useWebp === `false` || useWebp === `0`){
+	useWebp = false
+}
+
 module.exports = function webflowPlugin(){
 	let excludeFromSitemap = []
 	return function(){
 		
-		this.on(`parseCss`, async ({ data }) => {
-			const result = await postcss([postcssWebp({
-				rename: oldName => {
-					// Extracts url from CSS string background image
-					const oldUrl = oldName.match(/url\(['"]?([^'"]+)['"]?\)/)[1]
-					const newUrl = `${oldUrl}.webp`
-					const newName = oldName.replace(oldUrl, newUrl)
-					return newName
-				}
-			})])
-    			.process(data, { from: undefined })
-			return result.css
-		})
+		// Parse CSS for webp images
+		if(useWebp){
+			this.on(`parseCss`, async ({ data }) => {
+				const result = await postcss([postcssWebp({
+					rename: oldName => {
+						// Extracts url from CSS string background image
+						const oldUrl = oldName.match(/url\(['"]?([^'"]+)['"]?\)/)[1]
+						const newUrl = `${oldUrl}.webp`
+						const newName = oldName.replace(oldUrl, newUrl)
+						return newName
+					}
+				})])``
+					 .process(data, { from: undefined })
+				return result.css
+			})
+		}
 
 		this.on(`parseHtml`, ({ $, url }) => {
 			const $body = $(`body`)
-			const $head = $(`head`)
+			// const $head = $(`head`)
 			const $html = $(`html`)
 
 			// Polyfill for webp
-			$body.append(`<script>document.body.classList.remove('no-js');var i=new Image;i.onload=i.onerror=function(){document.body.classList.add(i.height==1?"webp":"no-webp")};i.src="data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==";</script>`)
+			if(useWebp){
+				$body.append(`<script>document.body.classList.remove('no-js');var i=new Image;i.onload=i.onerror=function(){document.body.classList.add(i.height==1?"webp":"no-webp")};i.src="data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==";</script>`)
+			}
 
 			// Removes the "Powered by Webflow" link for paid accounts
 			$html.removeAttr(`data-wf-domain`)
@@ -87,6 +98,8 @@ module.exports = function webflowPlugin(){
 			if(!includeInSitemap){
 				excludeFromSitemap.push(url)
 			}
+
+
 		})
 
 		this.on(`complete`, async () => {
@@ -99,30 +112,33 @@ module.exports = function webflowPlugin(){
 				await outputFile(join(dist, `robots.txt`), ``)
 			}
 
-			// Add webp support to HTML files
-			console.log(`Adding webp support...`)
-			const htmlFiles = await globby(`${dist}/**/*.html`)
-			for(let file of htmlFiles){
-				let html = await readFile(file, `utf8`)
 
-				// Add webp support to image tags
-				const result = await posthtml()
-					.use(posthtmlWebp({
-						extensionIgnore: [`svg`],
-					}))
-					.process(html)
-				html = result.html
+			if(useWebp){
+				// Add webp support to HTML files
+				console.log(`Adding webp support...`)
+				const htmlFiles = await globby(`${dist}/**/*.html`)
+				for(let file of htmlFiles){
+					let html = await readFile(file, `utf8`)
+					// Add webp support to image tags
+					const result = await posthtml()
+						.use(posthtmlWebp({
+							extensionIgnore: [`svg`],
+						}))
+						.process(html)
+					html = result.html
+					await outputFile(file, html)
+				}
 
-				await outputFile(file, html)
+				// Create webp images
+				console.log(`Creating webp images...`)
+				const images = await globby(`${dist}/**/*.{jpg,jpeg,png,gif}`)
+				for(let file of images){
+					const newPath = file + `.webp`
+					await webp.cwebp(file, newPath, `-q 90`)
+				}
 			}
 
-			// Create webp images
-			console.log(`Creating webp images...`)
-			const images = await globby(`${dist}/**/*.{jpg,jpeg,png,gif}`)
-			for(let file of images){
-				const newPath = file + `.webp`
-				await webp.cwebp(file, newPath, `-q 90`)
-			}
+
 
 			// Remove excluded pages from sitemap
 			excludeFromSitemap = excludeFromSitemap.map(url => {
