@@ -15,9 +15,16 @@ module.exports = async function writeFile(url, contents, ext){
 		}
 		pathname = `${pathname}index.html`
 	}
-	const outputPath = join(this.dist, domainPath, decodeURIComponent(pathname))
+	let outputPath = join(this.dist, domainPath, decodeURIComponent(pathname))
+
+	// Allow plugins to modify paths
+	const pluginObj = { url, outputPath }
+	await this.emit(`writeFile`, pluginObj)
+	outputPath = pluginObj.outputPath
+
+
 	if(!contents){
-		const data = await download(url)
+		let data = await download(url)
 		await outputFile(outputPath, data)
 	}
 	else{
