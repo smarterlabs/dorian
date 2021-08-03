@@ -3,6 +3,8 @@
   publish = "dist/"
 [build.environment]
   NETLIFY_USE_YARN = "true"
+[build.processing.html]
+  pretty_urls = true
 
 [template]
   incoming-hooks = ["Webflow"]
