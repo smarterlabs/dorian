@@ -18,9 +18,9 @@ module.exports = async function writeFile(url, contents, ext){
 	let outputPath = join(this.dist, domainPath, decodeURIComponent(pathname))
 
 	// Allow plugins to modify paths
-	const obj = { url, outputPath }
-	await this.emit(`writeFile`, obj)
-	outputPath = obj.outputPath
+	const pluginObj = { url, outputPath }
+	await this.emit(`writeFile`, pluginObj)
+	outputPath = pluginObj.outputPath
 
 
 	if(!contents){
