@@ -46,6 +46,11 @@ module.exports = function webflowPlugin(){
 			// const $head = $(`head`)
 			const $html = $(`html`)
 
+			// Add lang attrbute
+			if(!$html.attr(`lang`)){
+				$html.attr(`lang`, `en`)
+			}
+
 			// Polyfill for webp
 			if(useWebp){
 				$body.append(`<script>document.body.classList.remove('no-js');var i=new Image;i.onload=i.onerror=function(){document.body.classList.add(i.height==1?"webp":"no-webp")};i.src="data:image/webp;base64,UklGRhoAAABXRUJQVlA4TA0AAAAvAAAAEAcQERGIiP4HAA==";</script>`)
@@ -236,13 +241,20 @@ module.exports = function webflowPlugin(){
 
 
 			// Write redirects file
-			const template = await readFile(join(__dirname, `_redirects.template`), `utf8`)
 			let origin = process.env.WEBFLOW_URL
 			while(origin[origin.length - 1] === `/`){
 				origin = origin.substring(0, origin.length - 1)
 			}
-			let redirectsData = template.replace(/{{domain}}/g, origin)
-			await outputFile(join(dist, `_redirects`), redirectsData)
+			if(process.env.VERCEL){
+				const template = await readFile(join(__dirname, `vercel.json.template`), `utf8`)
+				let redirectsData = template.replace(/{{domain}}/g, origin)
+				await outputFile(join(dist, `vercel.json`), redirectsData)
+			}
+			else{
+				const template = await readFile(join(__dirname, `_redirects.template`), `utf8`)
+				let redirectsData = template.replace(/{{domain}}/g, origin)
+				await outputFile(join(dist, `_redirects`), redirectsData)
+			}
 
 		})
 	}

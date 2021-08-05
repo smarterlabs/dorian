@@ -11,7 +11,7 @@ const { on, emit } = require(`./events`)
 
 const defaultOptions = {
 	entry: [],
-	dist: `dist`,
+	dist: `public`,
 	domains: [],
 	protocol: `https`,
 	concurrency: 5,

@@ -8,8 +8,8 @@
   "private": true,
   "scripts": {
     "build": "yarn run clean && cd packages/orchestration && dotenv -e ../../.env -- npm run build",
-    "clean": "del dist",
-    "serve": "serve dist",
+    "clean": "del public",
+    "serve": "serve public",
     "stop": "sudo killall -9 node",
     "version": "lerna version"
   },

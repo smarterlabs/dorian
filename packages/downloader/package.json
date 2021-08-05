@@ -4,8 +4,8 @@
   "license": "PURCHASE AT cryolayer.com",
   "main": "src/index.js",
   "scripts": {
-    "clean": "del-cli dist",
-    "serve": "serve dist",
+    "clean": "del-cli public",
+    "serve": "serve public",
     "test": "node test"
   },
   "dependencies": {

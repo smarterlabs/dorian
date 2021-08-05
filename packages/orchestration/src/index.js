@@ -3,13 +3,13 @@ const webflowPlugin = require(`@app/webflow-plugin`)
 
 // Exit if environment variables are missing
 let siteUrl = process.env.WEBFLOW_URL
-let destinationOrigin = process.env.URL || process.env.DEPLOY_URL
+let destinationOrigin = process.env.URL || process.env.VERCEL_URL || process.env.DEPLOY_URL
 if(!siteUrl){
 	console.error(`No "WEBFLOW_URL" environment variable set.`)
 	process.exit(1)
 }
 if(!destinationOrigin){
-	console.error(`No "URL" or "DEPLOY_URL" environment variable set.`)
+	console.error(`No "URL", "VERCEL_URL", or "DEPLOY_URL" environment variable set.`)
 	process.exit(1)
 }
 
@@ -42,7 +42,7 @@ download({
 	],
 	replaceOrigin: destinationOrigin,
 	concurrency: 10,
-	dist: `../../dist`,
+	dist: `../../public`,
 	plugins: [
 		webflowPlugin(),
 	],

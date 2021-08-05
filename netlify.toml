@@ -1,6 +1,6 @@
 [build]
   command = "yarn build"
-  publish = "dist/"
+  publish = "public/"
 [build.environment]
   NETLIFY_USE_YARN = "true"
 [build.processing.html]
