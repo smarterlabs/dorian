@@ -236,13 +236,20 @@ module.exports = function webflowPlugin(){
 
 
 			// Write redirects file
-			const template = await readFile(join(__dirname, `_redirects.template`), `utf8`)
 			let origin = process.env.WEBFLOW_URL
 			while(origin[origin.length - 1] === `/`){
 				origin = origin.substring(0, origin.length - 1)
 			}
-			let redirectsData = template.replace(/{{domain}}/g, origin)
-			await outputFile(join(dist, `_redirects`), redirectsData)
+			if(process.env.VERCEL){
+				const template = await readFile(join(__dirname, `vercel.json.template`), `utf8`)
+				let redirectsData = template.replace(/{{domain}}/g, origin)
+				await outputFile(join(dist, `vercel.json`), redirectsData)
+			}
+			else{
+				const template = await readFile(join(__dirname, `_redirects.template`), `utf8`)
+				let redirectsData = template.replace(/{{domain}}/g, origin)
+				await outputFile(join(dist, `_redirects`), redirectsData)
+			}
 
 		})
 	}
