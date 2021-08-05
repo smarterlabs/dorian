@@ -1,17 +1,15 @@
-const { join, parse } = require(`path`)
+const { join } = require(`path`)
 const globby = require(`globby`)
 const cheerio = require(`cheerio`)
 const { readFile, outputFile } = require(`fs-extra`)
 const posthtml = require(`posthtml`)
 const posthtmlWebp = require(`posthtml-webp`)
 const webp = require(`webp-converter`)
-const get = require(`lodash/get`)
 const postcss = require('postcss')
 const postcssWebp = require(`webp-in-css/plugin`)
-const axios = require(`axios`)
 const { exists } = require('fs-extra')
-const critical = require(`critical`)
 const inlineCriticalCss = require(`netlify-plugin-inline-critical-css`).onPostBuild
+const imageOptim = require(`netlify-plugin-image-optim`).onPostBuild
 
 webp.grant_permission()
 
@@ -23,6 +21,7 @@ if(useWebp === `no` || useWebp === `false` || useWebp === `0`){
 
 module.exports = function webflowPlugin(){
 	let excludeFromSitemap = []
+
 	return function(){
 		
 		// Parse CSS for webp images
@@ -120,6 +119,7 @@ module.exports = function webflowPlugin(){
 
 		this.on(`complete`, async () => {
 			const dist = this.dist
+			const PUBLISH_DIR = join(process.cwd(), dist)
 
 			// Inline critical CSS
 			console.log(`Inlining critical CSS...`)
@@ -141,7 +141,7 @@ module.exports = function webflowPlugin(){
 					],
 				},
 				constants: {
-					PUBLISH_DIR: join(process.cwd(), dist),
+					PUBLISH_DIR,
 				},
 				utils: {
 					build: {
@@ -152,7 +152,24 @@ module.exports = function webflowPlugin(){
 						},
 					},
 				},
+			}).catch(err => {
+				console.error(err)
+				process.exit(1)
 			})
+			console.log(`Inlined critical CSS`)
+
+			// Optimize images
+			console.log(`Optimizing images...`)
+			await imageOptim({
+				constants: {
+					PUBLISH_DIR,
+				},
+			}).catch((err, { error }) => {
+				console.error(err)
+				console.error(error)
+				process.exit(1)
+			})
+			console.log(`Optimized images`)
 			
 			
 
