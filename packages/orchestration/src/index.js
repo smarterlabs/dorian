@@ -9,7 +9,7 @@ if(!siteUrl){
 	process.exit(1)
 }
 if(!destinationOrigin){
-	console.error(`No "URL" or "DEPLOY_URL" environment variable set.`)
+	console.error(`No "URL", "VERCEL_URL", or "DEPLOY_URL" environment variable set.`)
 	process.exit(1)
 }
 
