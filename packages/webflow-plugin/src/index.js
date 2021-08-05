@@ -1,15 +1,15 @@
-const { join, parse } = require(`path`)
+const { join } = require(`path`)
 const globby = require(`globby`)
 const cheerio = require(`cheerio`)
 const { readFile, outputFile } = require(`fs-extra`)
 const posthtml = require(`posthtml`)
 const posthtmlWebp = require(`posthtml-webp`)
 const webp = require(`webp-converter`)
-const get = require(`lodash/get`)
 const postcss = require('postcss')
 const postcssWebp = require(`webp-in-css/plugin`)
-const axios = require(`axios`)
 const { exists } = require('fs-extra')
+const inlineCriticalCss = require(`netlify-plugin-inline-critical-css`).onPostBuild
+const imageOptim = require(`netlify-plugin-image-optim`).onPostBuild
 
 webp.grant_permission()
 
@@ -21,6 +21,7 @@ if(useWebp === `no` || useWebp === `false` || useWebp === `0`){
 
 module.exports = function webflowPlugin(){
 	let excludeFromSitemap = []
+
 	return function(){
 		
 		// Parse CSS for webp images
@@ -109,17 +110,68 @@ module.exports = function webflowPlugin(){
 			
 			// Split path into parts
 			const parts = outputPath.replace(dist, ``).split(`/`)
-			console.log(`parts`, parts)
 			const name = parts.pop()
 			const dir = parts.pop()
 			if(name === `index.html` && dir){
 				obj.outputPath = dist + parts.join(`/`) + `/` + dir + `.html`
-				console.log(`obj.outputPath`, obj.outputPath)
 			}
 		})
 
 		this.on(`complete`, async () => {
 			const dist = this.dist
+			const PUBLISH_DIR = join(process.cwd(), dist)
+
+			// Inline critical CSS
+			console.log(`Inlining critical CSS...`)
+			await inlineCriticalCss({
+				inputs: {
+					fileFilter: ['*.html'],
+					directoryFilter: ['!node_modules'],
+					minify: true,
+					extract: true,
+					dimensions: [
+						{
+							width: 414,
+							height: 896,
+						},
+						{
+							width: 1920,
+							height: 1080,
+						},
+					],
+				},
+				constants: {
+					PUBLISH_DIR,
+				},
+				utils: {
+					build: {
+						failBuild: (msg, { error }) => {
+							console.error(msg)
+							console.error(error)
+							process.exit(1)
+						},
+					},
+				},
+			}).catch(err => {
+				console.error(err)
+				process.exit(1)
+			})
+			console.log(`Inlined critical CSS`)
+
+			// Optimize images
+			console.log(`Optimizing images...`)
+			await imageOptim({
+				constants: {
+					PUBLISH_DIR,
+				},
+			}).catch((err, { error }) => {
+				console.error(err)
+				console.error(error)
+				process.exit(1)
+			})
+			console.log(`Optimized images`)
+			
+			
 
 			// Create robots.txt if it doesn't exist
 			const robotsExists = await exists(join(dist, `robots.txt`))

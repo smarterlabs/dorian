@@ -14,9 +14,3 @@
 
 # [[plugins]]
 # package = "netlify-plugin-subfont"
-
-[[plugins]]
-package = "netlify-plugin-image-optim"
-
-[[plugins]]
-package = "netlify-plugin-inline-critical-css"
