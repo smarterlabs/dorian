@@ -17,7 +17,7 @@ Then run:
 yarn build
 ```
 
-It should output the files to the `dist` folder in the project root. You can test the site out locally by running:
+It should output the files to the `public` folder in the project root. You can test the site out locally by running:
 
 ```bash
 yarn serve

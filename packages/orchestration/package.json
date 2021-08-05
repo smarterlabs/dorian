@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "node src/index",
-    "serve": "serve dist"
+    "serve": "serve public"
   },
   "dependencies": {
     "@app/downloader": "^1.0.0",
