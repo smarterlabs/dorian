@@ -10,6 +10,8 @@ const postcss = require('postcss')
 const postcssWebp = require(`webp-in-css/plugin`)
 const axios = require(`axios`)
 const { exists } = require('fs-extra')
+const critical = require(`critical`)
+const inlineCriticalCss = require(`netlify-plugin-inline-critical-css`).onPostBuild
 
 webp.grant_permission()
 
@@ -109,17 +111,50 @@ module.exports = function webflowPlugin(){
 			
 			// Split path into parts
 			const parts = outputPath.replace(dist, ``).split(`/`)
-			console.log(`parts`, parts)
 			const name = parts.pop()
 			const dir = parts.pop()
 			if(name === `index.html` && dir){
 				obj.outputPath = dist + parts.join(`/`) + `/` + dir + `.html`
-				console.log(`obj.outputPath`, obj.outputPath)
 			}
 		})
 
 		this.on(`complete`, async () => {
 			const dist = this.dist
+
+			// Inline critical CSS
+			console.log(`Inlining critical CSS...`)
+			await inlineCriticalCss({
+				inputs: {
+					fileFilter: ['*.html'],
+					directoryFilter: ['!node_modules'],
+					minify: true,
+					extract: true,
+					dimensions: [
+						{
+							width: 414,
+							height: 896,
+						},
+						{
+							width: 1920,
+							height: 1080,
+						},
+					],
+				},
+				constants: {
+					PUBLISH_DIR: join(process.cwd(), dist),
+				},
+				utils: {
+					build: {
+						failBuild: (msg, { error }) => {
+							console.error(msg)
+							console.error(error)
+							process.exit(1)
+						},
+					},
+				},
+			})
+			
+			
 
 			// Create robots.txt if it doesn't exist
 			const robotsExists = await exists(join(dist, `robots.txt`))
