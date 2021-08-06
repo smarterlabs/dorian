@@ -28,13 +28,17 @@ if(destinationOrigin[destinationOrigin.length - 1] !== `/`){
 	destinationOrigin = destinationOrigin + `/`
 }
 
+const entry = [
+	siteUrl,
+	`${siteUrl}/robots.txt`,
+]
+if(process.env.BCP){
+	entry.push(`${siteUrl}/sitemap.xml`)
+}
+
 // Download site
 download({
-	entry: [
-		siteUrl,
-		`${siteUrl}/robots.txt`,
-		`${siteUrl}/sitemap.xml`,
-	],
+	entry,
 	domains: [
 		{ domain: siteUrl.split(`://`)[1], path: `/` },
 		{ domain: `assets.website-files.com`, path: `/assets` },

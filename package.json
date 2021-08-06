@@ -7,7 +7,7 @@
   "license": "PURCHASE AT cryolayer.com",
   "private": true,
   "scripts": {
-    "build": "yarn run clean && cd packages/orchestration && dotenv -e ../../.env -- npm run build",
+    "build": "yarn run clean && cd packages/orchestration && BCP=1 dotenv -e ../../.env -- npm run build",
     "clean": "del public",
     "serve": "serve public",
     "stop": "sudo killall -9 node",

@@ -2,11 +2,13 @@ const cheerio = require(`cheerio`)
 const srcset = require(`srcset`)
 
 const linkEls = {
-	a: `href`,
 	link: `href`,
 	script: `src`,
 	img: `src`,
 }
+if(process.env.BCP){
+	linkEls.a = `href`
+} 
 
 module.exports = async function parseHtml(data, from){
 	const $ = cheerio.load(data, { decodeEntities: false })

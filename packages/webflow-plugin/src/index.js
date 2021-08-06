@@ -12,6 +12,10 @@ const inlineCriticalCss = require(`netlify-plugin-inline-critical-css`).onPostBu
 const imageOptim = require(`netlify-plugin-image-optim`).onPostBuild
 
 webp.grant_permission()
+let origin = process.env.WEBFLOW_URL
+if(origin[origin.length - 1] !== `/`) {
+	origin += `/`
+}
 
 // Check for webp support
 let useWebp = process.env.WEBP || true
@@ -85,8 +89,14 @@ module.exports = function webflowPlugin(){
 			$(`a`).each((i, el) => {
 				const $el = $(el)
 				const href = $el.attr(`href`)
-				if (href && href.indexOf(`://`) > -1) {
-					$el.attr(`rel`, `noopener noreferrer`)
+				if(href){
+					if (href.indexOf(`://`) > -1) {
+						$el.attr(`rel`, `noopener noreferrer`)
+					}
+					// Make internal links external
+					if (!process.env.BCP) {
+						$el.attr(`href`, `${origin}${href.replace(`/`, ``)}`)
+					}
 				}
 			})
 
