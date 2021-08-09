@@ -162,7 +162,6 @@ module.exports = function webflowPlugin(){
 					build: {
 						failBuild: (msg, { error }) => {
 							console.error(msg)
-							console.error(error)
 							process.exit(1)
 						},
 					},
@@ -179,10 +178,9 @@ module.exports = function webflowPlugin(){
 				constants: {
 					PUBLISH_DIR,
 				},
-			}).catch((err, { error }) => {
+			}).catch((err) => {
 				console.error(err)
-				console.error(error)
-				process.exit(1)
+				// process.exit(1)
 			})
 			console.log(`Optimized images`)
 			
