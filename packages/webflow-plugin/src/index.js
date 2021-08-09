@@ -162,15 +162,14 @@ module.exports = function webflowPlugin(){
 					build: {
 						failBuild: (msg, { error }) => {
 							console.error(msg)
-							process.exit(1)
+							console.error(error)
+							// process.exit(1)
 						},
 					},
 				},
 			}).catch(err => {
 				console.error(err)
-				process.exit(1)
 			})
-			console.log(`Inlined critical CSS`)
 
 			// Optimize images
 			console.log(`Optimizing images...`)
@@ -182,7 +181,6 @@ module.exports = function webflowPlugin(){
 				console.error(err)
 				// process.exit(1)
 			})
-			console.log(`Optimized images`)
 			
 			
 
