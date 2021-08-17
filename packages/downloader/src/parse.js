@@ -6,7 +6,10 @@ module.exports = async function parse(url){
 
 	// Fetch URL
 	let head
-	try{ head = await axios.head(url) } catch(err){ return }
+	try{ head = await axios.head(url) } catch(err){
+		// console.error(err)
+		return
+	}
 	const contentType = get(head, `headers.content-type`)
 
 	// Parse XML
