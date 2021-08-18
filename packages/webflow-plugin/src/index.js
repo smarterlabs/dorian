@@ -17,11 +17,28 @@ if(origin[origin.length - 1] !== `/`) {
 	origin += `/`
 }
 
-// Check for webp support
-let useWebp = process.env.WEBP || true
-if(useWebp === `no` || useWebp === `false` || useWebp === `0`){
-	useWebp = false
+function toBool(str){
+	const type = typeof str
+	if(type === `boolean`) {
+		return str
+	}
+	if(type === `string`) {
+		if(
+			str === `true` ||
+			str === `yes` ||
+			str === `on` ||
+			str === `1`
+		) {
+			return true
+		}
+		return false
+	}
+	return !!str
 }
+
+// Check for feature flags
+let useWebp = toBool(process.env.WEBP)
+let inlineCss = toBool(process.env.INLINE_CSS)
 
 module.exports = function webflowPlugin(){
 	let excludeFromSitemap = []
@@ -143,40 +160,42 @@ module.exports = function webflowPlugin(){
 			const PUBLISH_DIR = join(process.cwd(), dist)
 
 			// Inline critical CSS
-			console.log(`Inlining critical CSS...`)
-			await inlineCriticalCss({
-				inputs: {
-					fileFilter: ['*.html'],
-					directoryFilter: ['!node_modules'],
-					minify: true,
-					extract: true,
-					dimensions: [
-						{
-							width: 414,
-							height: 896,
-						},
-						{
-							width: 1920,
-							height: 1080,
-						},
-					],
-				},
-				constants: {
-					PUBLISH_DIR,
-				},
-				utils: {
-					build: {
-						failBuild: (msg, { error }) => {
-							console.error(msg)
-							console.error(error)
-							// process.exit(1)
+			if(inlineCss){
+				console.log(`Inlining critical CSS...`)
+				await inlineCriticalCss({
+					inputs: {
+						fileFilter: ['*.html'],
+						directoryFilter: ['!node_modules'],
+						minify: true,
+						extract: true,
+						dimensions: [
+							{
+								width: 414,
+								height: 896,
+							},
+							{
+								width: 1920,
+								height: 1080,
+							},
+						],
+					},
+					constants: {
+						PUBLISH_DIR,
+					},
+					utils: {
+						build: {
+							failBuild: (msg, { error }) => {
+								console.error(msg)
+								console.error(error)
+								// process.exit(1)
+							},
 						},
 					},
-				},
-			}).catch(err => {
-				console.log(`ERROR`)
-				console.error(err)
-			})
+				}).catch(err => {
+					console.log(`ERROR`)
+					console.error(err)
+				})
+			}
 
 			// Optimize images
 			console.log(`Optimizing images...`)
