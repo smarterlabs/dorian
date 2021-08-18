@@ -26,7 +26,9 @@ module.exports = async function parseHtml(data, from){
 			}
 		})
 
-		// Loop through styles
+
+
+		// Loop through inline styles
 		const $styleEls = $(`[style]`)
 		for(let i = 0; i < $styleEls.length; i++){
 			const $el = $($styleEls[i])
@@ -34,7 +36,22 @@ module.exports = async function parseHtml(data, from){
 			if(style){
 				style = style.replace(/"/g, `'`)
 				const newStyle = await this.parseCss(style, from)
+				// console.log(`newStyle`, newStyle)
+				// process.exit(0)
 				$el.attr(`style`, newStyle)
+			}
+		}
+		// Loop through style tags
+		const $styleTags = $(`style`)
+		for(let i = 0; i < $styleTags.length; i++){
+			const $el = $($styleTags[i])
+			let style = $el.html()
+			if(style){
+				style = style.replace(/"/g, `'`)
+				const newStyle = await this.parseCss(style, from)
+				// console.log(`newStyle`, newStyle)
+				// process.exit(0)
+				$el.html(newStyle)
 			}
 		}
 
@@ -51,6 +68,17 @@ module.exports = async function parseHtml(data, from){
 				})
 				const newStr = srcset.stringify(parsed)
 				node.attr(`srcset`, newStr)
+			}
+		})
+
+		// Parse data-src
+		$(`[data-src]`).each((_, el) => {
+			const node = $(el)
+			const url = node.attr(`data-src`)
+			if(url){
+				this.addToQueue(url, from)
+				const newUrl = this.convertUrl(url, true)
+				node.attr(`data-src`, newUrl)
 			}
 		})
 

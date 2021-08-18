@@ -47,7 +47,7 @@ module.exports = function webflowPlugin(){
 
 		this.on(`parseHtml`, ({ $, url }) => {
 			const $body = $(`body`)
-			// const $head = $(`head`)
+			const $head = $(`head`)
 			const $html = $(`html`)
 
 			// Add lang attrbute
@@ -62,6 +62,12 @@ module.exports = function webflowPlugin(){
 
 			// Removes the "Powered by Webflow" link for paid accounts
 			$html.removeAttr(`data-wf-domain`)
+
+			// Remove generator meta tag
+			$head.find(`meta[name="generator"]`).remove()
+
+			// Add CryoLayer generator meta tag
+			$head.append(`<meta name="generator" content="CryoLayer" />`)
 
 			// Make webfonts.js async
 			// let webfontsJs = `{}`
@@ -168,6 +174,7 @@ module.exports = function webflowPlugin(){
 					},
 				},
 			}).catch(err => {
+				console.log(`ERROR`)
 				console.error(err)
 			})
 
