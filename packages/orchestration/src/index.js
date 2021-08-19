@@ -30,6 +30,7 @@ if(destinationOrigin[destinationOrigin.length - 1] !== `/`){
 
 const entry = [
 	siteUrl,
+	`${siteUrl}/404`,
 	`${siteUrl}/robots.txt`,
 ]
 if(process.env.BCP){
