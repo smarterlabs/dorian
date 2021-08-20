@@ -7,8 +7,11 @@ module.exports = async function parse(url){
 	// Fetch URL
 	let head
 	try{ head = await axios.head(url) } catch(err){
-		// console.error(err)
-		return
+		head = err.response
+		const path = head.request.path
+		if(path != `/404` && path != `/404.html`){
+			return
+		}
 	}
 	const contentType = get(head, `headers.content-type`)
 
@@ -22,7 +25,13 @@ module.exports = async function parse(url){
 	// Parse HTML
 	else if(contentType.indexOf(`text/html`) === 0){
 		let result
-		try{ result = await axios.get(url) } catch(err){ return }
+		try{ result = await axios.get(url) } catch(err){
+			result = err.response
+			const path = result.request.path
+			if(path != `/404` && path != `/404.html`){
+				return
+			}
+		}
 		const newContents = await this.parseHtml(result.data, url)
 		await this.writeFile(url, newContents, `html`)
 	}
