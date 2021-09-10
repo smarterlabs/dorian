@@ -72,9 +72,19 @@ async function parseNext(){
 
 
 function convertUrl(url, makeRelative){
+	// Convert absolute paths that need to be relative
 	if(url.indexOf(`//`) === 0 || url.indexOf(`http://`) === 0 || url.indexOf(`https://`) === 0){
 		if(this.findDomainPath(url)){
 			return this.convertAbsoluteUrl(url, makeRelative)
+		}
+	}
+	// Convert URL with query params to static path
+	else if(url.indexOf(`?`) > -1){
+		url = url
+			.replace(/\?/g, ``)
+			.replace(/[&=]/g, `/`)
+		if(url.indexOf(`/`) !== 0){
+			url = `/${url}`
 		}
 	}
 	return url
