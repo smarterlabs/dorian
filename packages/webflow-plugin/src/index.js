@@ -39,6 +39,7 @@ function toBool(str){
 // Check for feature flags
 let useWebp = toBool(process.env.WEBP)
 let inlineCss = toBool(process.env.INLINE_CSS)
+let replaceRobotsTxt = toBool(process.env.REPLACE_ROBOTS_TXT)
 
 module.exports = function webflowPlugin(){
 	let excludeFromSitemap = []
@@ -211,8 +212,8 @@ module.exports = function webflowPlugin(){
 			
 
 			// Create robots.txt if it doesn't exist
-			const robotsExists = await exists(join(dist, `robots.txt`))
-			if (!robotsExists) {
+			const newRobotsTxt = replaceRobotsTxt || !(await exists(join(dist, `robots.txt`)))
+			if (newRobotsTxt) {
 				console.log(`Creating robots.txt...`)
 				await outputFile(join(dist, `robots.txt`), ``)
 			}
