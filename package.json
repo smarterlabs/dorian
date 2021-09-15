@@ -2,7 +2,6 @@
   "name": "dorian",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "git@github.com:smarterlabs/dorian.git",
   "author": "Kennedy Rose <kennedyianrose@gmail.com>",
   "license": "PURCHASE AT cryolayer.com",
   "private": true,

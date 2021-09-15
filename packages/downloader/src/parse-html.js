@@ -19,7 +19,14 @@ module.exports = async function parseHtml(data, from){
 		$(tag).each((_, el) => {
 			const node = $(el)
 			const url = node.attr(attr)
-			if(url){
+			if(
+				url &&
+				!url.startsWith(`data:`) &&
+				!url.startsWith(`mailto:`) &&
+				!url.startsWith(`tel:`) &&
+				!url.startsWith(`#`) &&
+				!url.startsWith(`javascript:`)
+			){
 				this.addToQueue(url, from)
 				const newUrl = this.convertUrl(url, true)
 				node.attr(attr, newUrl)
