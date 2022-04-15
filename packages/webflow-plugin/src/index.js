@@ -237,7 +237,7 @@ module.exports = function webflowPlugin(){
 
 				// Create webp images
 				console.log(`Creating webp images...`)
-				const images = await globby(`${dist}/**/*.{jpg,jpeg,png,gif}`)
+				const images = await globby(`${dist}/**/*.{jpg,jpeg,png,gif,JPG,JPEG,PNG,GIF}`)
 				for(let file of images){
 					const newPath = file + `.webp`
 					await webp.cwebp(file, newPath, `-q 90`)
